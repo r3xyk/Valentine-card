@@ -1,0 +1,54 @@
+body {
+  background-color: pink;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+h1 {
+    text-align: center;
+}
+
+header {
+  position: relative;
+  width: 75%;
+  margin: 64px auto;
+  padding: 64px 32px;
+  border-radius: 16px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+div {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+button {
+  padding: 12px 32px;
+  border-radius: 8px;
+  border: none;
+  background-color: black;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.1);
+  background-color: red;
+}

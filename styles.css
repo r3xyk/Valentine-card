@@ -1,54 +1,205 @@
+/* General styling */
 body {
-  background-color: pink;
-  font-family: 'Poppins', sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
+    background-color: pink;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
 }
 
-h1 {
-    text-align: center;
+/* THE LETTER (75% wide) - Fixed position to prevent disappearing */
+header#valentineContent {
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 20%); /* Initial hidden position */
+    width: 75%;
+    height: 450px;
+    padding: 64px 32px;
+    border-radius: 16px;
+    background-color: white;
+    display: none; /* Initially hidden without inline style */
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    z-index: 10000; 
+    opacity: 0;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
 }
 
-header {
-  position: relative;
-  width: 75%;
-  margin: 64px auto;
-  padding: 64px 32px;
-  border-radius: 16px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+#valentineContent.pop-out {
+    display: flex !important;
+    opacity: 1;
+    transform: translate(-50%, -50%); /* Pops to center */
 }
 
-.photo {
+/* THE ENVELOPE (90% wide) */
+#letterScreen {
+    position: relative;
+    width: 90%; 
+    aspect-ratio: 3/2;
+    margin: 100px auto;
+    z-index: 10;
+    transition: transform 1s ease-in, opacity 0.8s ease;
+}
+
+.envelope-fall {
+    transform: translateY(120vh) rotate(5deg) !important;
+    opacity: 0;
+}
+
+#letterBox {
+    width: 100%;
+    height: 100%;
+    background: white;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* This wrapper handles the shadow and the rotation */
+#letterFlapWrapper {
+    width: 100%;
+    aspect-ratio: 3/1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5; 
+    transform-origin: top center;
+    transition: transform 0.8s ease;
+    filter: drop-shadow(0 12px 10px rgba(255, 45, 85, 0.4));
+}
+
+/* This handles the triangle shape */
+#letterFlap {
+    width: 100%;
+    height: 100%;
+    background: #ffeffa;
+    clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+}
+
+/* Update the animation class to target the wrapper */
+#letterFlapWrapper.fold-up {
+    transform: rotateX(160deg);
+}
+
+#letterFlap2 {
+    width: 100%;
+    aspect-ratio: 3/1;
+    background: #fff8fd;
+    clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+    position: absolute;
+    top: 0; left: 0;
+    z-index: 1;
+}
+
+#letterFlap.fold-up {
+    transform: rotateX(160deg);
+}
+
+#heartContainer {
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    /* This centers the heart perfectly and keeps your existing transition */
+    transform: translate(-50%, -50%); 
+    z-index: 999;
+    filter: drop-shadow(0 10px 15px rgba(255, 45, 85, 0.4));
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+}
+
+/* Update the hover to include the centering transform */
+#heartContainer:hover {
+    transform: translate(-50%, -50%) scale(1.15);
+    filter: drop-shadow(0 15px 25px rgba(255, 45, 85, 0.4));
+}
+
+#openLetterBtn {
+    position: relative; /* Changed from absolute */
+    width: 130px;
+    height: 120px;
+    padding: 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: none;
+    background: linear-gradient(145deg, #ff4e6c, #ff2d55);
+    color: white;
+    cursor: pointer;
+    clip-path: path('M65,35 C65,10 120,10 120,45 C120,85 65,115 65,115 C65,115 10,85 10,45 C10,10 65,10 65,35 Z');
+}
+
+/* Success Elements */
+h1 { text-align: center; }
+
+.photo { 
+  margin-top: 32px;
   width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
+  height: 150px; 
+  border-radius: 50%; 
+  object-fit: cover; 
+  border: 5px solid pink; 
+  margin-left: 8px;
+  margin-right: 8px;
 }
-
-div {
-  display: flex;
+.btn-group { 
+  display: flex; 
   justify-content: center;
-  gap: 16px;
-  margin-top: 16px;
+  gap: 16px; 
+  margin-top: 16px; 
 }
 
-button {
-  padding: 12px 32px;
-  border-radius: 8px;
-  border: none;
-  background-color: black;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+button:not(#openLetterBtn) {
+    padding: 12px 32px;
+    border-radius: 8px;
+    border: none;
+    background-color: black;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
-button:hover {
-  transform: scale(1.1);
-  background-color: red;
+.btn-group button {
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#yesBtn:hover, #noBtn:hover, #kissBtn:hover {
+    transform: scale(1.1);
+    background-color: #ff4e6c; 
+    box-shadow: 0 8px 15px rgba(255, 78, 108, 0.3);
+}
+
+#yesBtn:hover {
+    background-color: #2ecc71; 
+    transform: scale(1.15);
+}
+
+#noBtn:hover {
+    background-color: #e74c3c; 
+}
+
+/* Update your header to allow scrolling if it gets too tall */
+header#valentineContent {
+    /* ... existing styles ... */
+    height: auto; 
+    max-height: 85vh; 
+    overflow-y: auto; 
+}
+
+/* ADD THESE NEW CLASSES */
+.memories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 photos per row */
+    gap: 10px;
+    padding: 10px;
+}
+
+.memory-img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #ffeffa;
 }

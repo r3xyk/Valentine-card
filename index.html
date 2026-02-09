@@ -1,29 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Will you be my valentine?</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my valentine?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header>
-  <h1 id="question">Will you be my valentine?</h1>
-  <p id="p">Choose wisely.</p>
-  <div>
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn">No</button>
-    <button id="kissBtn" style="display:none;">Send a kiss to your lover 💋</button>
-  </div>
 
-  <!-- Photos container hidden initially -->
-  <div id="photos" style="display:none; gap:50px; justify-content:center; margin-top:20px;">
-    <img src="her.jpg" alt="Her" class="photo" id="herPhoto">
-    <img src="me.jpg" alt="Me" class="photo" id="myPhoto">
-  </div>
-</header>
+    <div id="letterScreen">
+        <div id="heartContainer">
+            <button id="openLetterBtn">Open</button>
+        </div>
+        <div id="letterFlapWrapper">
+            <div id="letterFlap"></div>
+        </div>
+        <div id="letterFlap2"></div>
+        <div id="letterBox"></div>
+    </div>
 
-<script src="script.js"></script>
+    <header id="valentineContent">
+        <h1 id="question">Will you be my valentine?</h1>
+        <p id="p">Choose wisely.</p>
+        
+        <div class="btn-group">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+            <button id="kissBtn" style="display:none;">Send a kiss to your lover 💋</button>
+        </div>
+
+        <div id="photos" style="display:none;">
+            <img src="her.jpg" alt="Her" class="photo" id="herPhoto">
+            <img src="me.jpg" alt="Me" class="photo" id="myPhoto">
+        </div>
+
+        <div id="memoriesSection" style="display:none;">
+            <h2 class="memories-title">Our Memories</h2>
+            <div class="memories-grid">
+                <img src="mem1.jpg" class="memory-img">
+                <img src="mem2.jpg" class="memory-img">
+                <img src="mem3.jpg" class="memory-img">
+                <img src="mem4.jpg" class="memory-img">
+                <img src="mem5.jpg" class="memory-img">
+                <img src="mem6.jpg" class="memory-img">
+                <img src="mem7.jpg" class="memory-img">
+                <img src="mem8.jpg" class="memory-img">
+                <img src="mem9.jpg" class="memory-img">
+                <img src="mem10.jpg" class="memory-img">
+                <img src="mem11.jpg" class="memory-img">
+                <img src="mem12.jpg" class="memory-img">
+            </div>
+        </div>
+
+        <audio id="bgMusic" loop>
+            <source src="love-song.mp3" type="audio/mpeg">
+        </audio>
+    </header>
+
+    <script src="script.js"></script>
 </body>
 </html>

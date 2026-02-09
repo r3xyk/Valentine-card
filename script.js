@@ -1,108 +1,130 @@
+// Elements
+const letterScreen = document.getElementById("letterScreen");
+const openLetterBtn = document.getElementById("openLetterBtn");
+const letterFlap = document.getElementById("letterFlap");
+const valentineContent = document.getElementById("valentineContent");
+const bgMusic = document.getElementById("bgMusic");
+
 const question = document.getElementById("question");
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const p = document.getElementById("p");
 const kissBtn = document.getElementById("kissBtn");
-const herPhoto = document.getElementById("herPhoto");
-const myPhoto = document.getElementById("myPhoto");
 const photosContainer = document.getElementById("photos");
+const myPhoto = document.getElementById("myPhoto");
+const herPhoto = document.getElementById("herPhoto");
 
 let step = 0;
+// Change this line at the top
+const letterFlapWrapper = document.getElementById("letterFlapWrapper"); // Targeted the wrapper
 
-// YES / NO logic
+// Update the OPEN LETTER logic
+openLetterBtn.addEventListener("click", () => {
+    openLetterBtn.style.display = "none";
+    
+    // Animate the WRAPPER (which holds the shadow) instead of the flap
+    letterFlapWrapper.classList.add("fold-up");
+
+    setTimeout(() => {
+        letterScreen.classList.add("envelope-fall");
+        valentineContent.style.display = "flex";
+        setTimeout(() => {
+            valentineContent.classList.add("pop-out");
+        }, 50);
+
+        bgMusic.volume = 0.5;
+        bgMusic.play().catch(() => {});
+    }, 600);
+});
+
+// Add this element to your list of constants at the top
+const memoriesSection = document.getElementById("memoriesSection");
+
+// Update ONLY this listener
 yesBtn.addEventListener("click", () => {
-  question.innerHTML = "Achievement unlocked:<br>Valentine acquired 💘";
-  yesBtn.style.display = "none";
-  noBtn.style.display = "none";
-  p.style.display = "none";
-
-  kissBtn.style.display = "inline-block"; // show kiss button
-  photosContainer.style.display = "flex";  // show photos
-});
-
-noBtn.addEventListener("click", () => {
-  if (step === 0) {
-    question.textContent = "Are you sure?";
+    question.innerHTML = "Achievement unlocked:<br>Valentine acquired 💘";
     yesBtn.style.display = "none";
-    step = 1;
-  } else {
-    question.textContent = "Now for real, are you going to be my valentine?";
-    yesBtn.style.display = "inline-block";
-    step = 0;
-  }
+    noBtn.style.display = "none";
+    p.style.display = "none"; 
+    kissBtn.style.display = "inline-block";
+    photosContainer.style.display = "flex";
+    
+    // ADD THIS LINE
+    memoriesSection.style.display = "block";
 });
 
-// Create a message div for "He sent you a kiss back"
-const messageDiv = document.createElement("div");
-messageDiv.style.position = "absolute";
-messageDiv.style.top = "20px";
-messageDiv.style.width = "100%";
-messageDiv.style.textAlign = "center";
-messageDiv.style.fontSize = "1.5rem";
-messageDiv.style.fontWeight = "600";
-messageDiv.style.color = "red";
-messageDiv.style.opacity = "0";
-document.body.appendChild(messageDiv);
+// YES BUTTON (SUCCESS)
+yesBtn.addEventListener("click", () => {
+    question.innerHTML = "Achievement unlocked:<br>Valentine acquired 💘";
+    yesBtn.style.display = "none";
+    noBtn.style.display = "none";
+    p.style.display = "none"; // Ensure p is hidden on success
+    kissBtn.style.display = "inline-block";
+    photosContainer.style.display = "flex";
+});
 
-// Function to animate kiss horizontally
-function sendKiss(fromPhoto, toPhoto, callback) {
-  const kiss = document.createElement("div");
-  kiss.textContent = "💋";
-  kiss.style.position = "absolute";
-  kiss.style.fontSize = "2rem";
-  kiss.style.opacity = "1";
-  kiss.style.pointerEvents = "none";
-
-  const fromRect = fromPhoto.getBoundingClientRect();
-  const toRect = toPhoto.getBoundingClientRect();
-  const bodyRect = document.body.getBoundingClientRect();
-
-  const startX = fromRect.left + fromRect.width/2 - bodyRect.left;
-  const startY = fromRect.top + fromRect.height/2 - bodyRect.top;
-  const endX = toRect.left + toRect.width/2 - bodyRect.left;
-  const endY = startY; // horizontal
-
-  kiss.style.left = startX + "px";
-  kiss.style.top = startY + "px";
-
-  document.body.appendChild(kiss);
-
-  let t = 0;
-  const duration = 2000;
-  const fps = 60;
-  const interval = 1000/fps;
-
-  const animate = setInterval(() => {
-    t += interval/duration;
-    if(t > 1) t = 1;
-
-    const x = startX + (endX - startX) * t;
-    const y = startY + (endY - startY) * t;
-
-    kiss.style.left = x + "px";
-    kiss.style.top = y + "px";
-    kiss.style.opacity = 1 - t;
-
-    if(t >= 1){
-      clearInterval(animate);
-      kiss.remove();
-      if(callback) callback(); // call after animation
+// NO BUTTON (LOOP LOGIC)
+noBtn.addEventListener("click", () => {
+    if (step === 0) {
+        // Step 1: Are you sure?
+        question.textContent = "Are you sure? 🥺";
+        p.style.display = "none";        // Hides the "Choose wisely" text
+        noBtn.textContent = "Yes, I'm sure"; 
+        yesBtn.style.display = "none";      
+        step = 1;
+    } else {
+        // RESET LOOP: Returns to the original state
+        question.textContent = "Will you be my valentine?";
+        p.style.display = "block";       // Shows the "Choose wisely" text again
+        noBtn.textContent = "No";
+        yesBtn.style.display = "inline-block"; 
+        step = 0;
     }
-  }, interval);
-}
-
-// KISS button click
-kissBtn.addEventListener("click", () => {
-  sendKiss(herPhoto, myPhoto, () => {
-    // After her kiss arrives, show message and send kiss back
-    messageDiv.textContent = "He sent you a kiss back";
-    messageDiv.style.opacity = "1";
-
-    sendKiss(myPhoto, herPhoto, () => {
-      // Fade out message after return kiss completes
-      setTimeout(() => {
-        messageDiv.style.opacity = "0";
-      }, 1500);
-    });
-  });
 });
+
+// ... existing elements and open/no logic remain the same ...
+
+// KISS LOGIC - Role Switched: She kisses you first
+kissBtn.addEventListener("click", () => {
+    // 1. Her Photo -> My Photo
+    sendKiss(herPhoto, myPhoto, () => {
+        // 2. My Photo -> Her Photo back after a small delay
+        setTimeout(() => {
+            sendKiss(myPhoto, herPhoto);
+        }, 400);
+    });
+});
+
+// KISS ANIMATION FUNCTION
+function sendKiss(from, to, callback) {
+    const kiss = document.createElement("div");
+    kiss.textContent = "💋";
+    kiss.style.position = "fixed";
+    kiss.style.fontSize = "2.5rem";
+    kiss.style.zIndex = "20000";
+    
+    // Get positions of the photos
+    const fRect = from.getBoundingClientRect();
+    const tRect = to.getBoundingClientRect();
+
+    const startX = fRect.left + fRect.width / 2;
+    const startY = fRect.top + fRect.height / 2;
+    const endX = tRect.left + tRect.width / 2;
+    const endY = tRect.top + tRect.height / 2;
+
+    kiss.style.left = startX + "px";
+    kiss.style.top = startY + "px";
+    document.body.appendChild(kiss);
+
+    // Animate the kiss across the screen
+    kiss.animate([
+        { left: startX + 'px', top: startY + 'px', opacity: 1, transform: 'scale(1)' },
+        { left: endX + 'px', top: endY + 'px', opacity: 0, transform: 'scale(2)' }
+    ], { 
+        duration: 1000, 
+        easing: 'ease-in-out' 
+    }).onfinish = () => {
+        kiss.remove();
+        if (callback) callback();
+    };
+}
